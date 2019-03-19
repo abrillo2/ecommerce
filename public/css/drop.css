@@ -1,0 +1,102 @@
+/* Dropdown Button */
+
+.dropbtn {
+    background-color: white;
+    color: rgb(17, 12, 12);
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* Dropdown Content (Hidden by Default) */
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+
+/* Links inside the dropdown */
+
+.dropdown-content a {
+    color: black;
+    padding: 6px 8px;
+    text-decoration: none;
+    display: block;
+}
+
+
+/* Change color of dropdown links on hover */
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+
+/* Show the dropdown menu on hover */
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+
+.dropdown:hover .dropbtn {
+    background-color: #ffffff;
+}
+
+
+/* notification bar
+
+/* Create the blue navigation bar */
+
+.navbar {
+    background-color: white;
+    font-size: 10px;
+    padding: 2px 4px;
+}
+
+
+/* Define what each icon button should look like */
+
+.button {
+    color: black;
+    display: inline-block;
+    /* Inline elements with width and height. TL;DR they make the icon buttons stack from left-to-right instead of top-to-bottom */
+    position: relative;
+    /* All 'absolute'ly positioned elements are relative to this one */
+    padding: 2px 5px;
+    /* Add some padding so it looks nice */
+}
+
+
+/* Make the badge float in the top right corner of the button */
+
+.button__badge {
+    background-color: #fa3e3e;
+    border-radius: 2px;
+    color: white;
+    padding: 1px 3px;
+    font-size: 10px;
+    position: absolute;
+    /* Position the badge within the relatively positioned button */
+    top: 0;
+    right: 0;
+}
+
+
+/*image upload for product */

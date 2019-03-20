@@ -125,7 +125,7 @@ class Home extends Controller
       public function registerUser()
       {
 
-        if(!isset($_POST['user_email'])){
+        if(!isset($_POST['user_email']) && !isset($_POST['user_name']) && !isset($_POST['user_password'])){
 
             return;
         }
@@ -170,5 +170,40 @@ class Home extends Controller
 
         
       }
+
+      public function favorite(Type $var = null)
+      {
+          # code...
+
+          session_start();
+          session_write_close();
+  
+          if(isset($_SESSION["userName"]) && isset($_SESSION["userEmail"]) && isset($_GET['id']))
+          {
+              $this->model->addToFavorite($_GET['id'],$_SESSION['userEmail']);
+              $this->showFavorite();
+          }else{
+              $this->login();
+          }
+          
+      }
+
+      public function showFavorite(Type $var = null)
+      {
+          # code...
+          
+          session_start();
+          session_write_close();
+        
+            if(isset($_SESSION["userName"]) && isset($_SESSION["userEmail"]))
+            {
+                require APP . 'view/session/sessionHeader.php';  
+                require APP . 'view/home/favorite.php';
+            }else{
+               //require APP . 'view/home/header.php'; 
+               //require APP . 'view/home/index.php';
+           } 
+    }
+      
 }
 

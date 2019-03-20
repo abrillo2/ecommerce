@@ -134,6 +134,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 								<button class="dropbtn"><?php echo $_SESSION['userName'] ;?></button>
 								<div class="dropdown-content">
 								<a href="<?php echo $logged_in?>requestList">buyer's request</a>
+								<a href="<?php echo $home_url?>showfavorite">Saved Items</a>
 									<a href="<?php echo $user_profile?>userProfile">profile</a>
 									<a href="<?php echo $logged_in?>logout">logOut</a>
 								</div>

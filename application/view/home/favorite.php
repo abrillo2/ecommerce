@@ -3,14 +3,15 @@
 	<?php 
 	
 
-			if(isset($_GET['category'])){
-				$products = $this->model->getProductByCategory($_GET['category']);
+			if(isset($_SESSION['userEmail'])){
+				$products = $this->model->getFavorite($_SESSION['userEmail']);
 			}elseif(isset($_GET['subCategory'])){
-				$products = $this->model->getProductBySubCatergory($_GET['subCategory']);
+				$products = $this->model->getRequestBySubCatergory($_GET['subCategory']);
 			}else{
-				$products = $this->model->getAllProduct();
-			}
-
+				$products = $this->model->getAllRequest();
+            }
+            
+           
 			$len = count($products);
 
 			$categories = $this->model->getCategory();
@@ -20,7 +21,7 @@
 	?>
 	<div class="container">
 			<div class="shoes-grid">
-			<a href="<?php echo $home_url?>single">
+			<a href="<?php echo $home_url?>single.php">
 			<div class="wrap-in">
 				<div class="wmuSlider example1 slide-grid">		 
 				   <div class="wmuSliderWrapper">		 
@@ -29,15 +30,17 @@
 
 foreach($products as $value){
 
-	$productPic = glob(PUB . "user/pic/" . $value->id. "/*.{jpg,gif,png}", GLOB_BRACE);
+    $productPic = glob(PUB . "user/pic/" . $value->id. "/*.{jpg,gif,png}", GLOB_BRACE);
 
-	if(count($productPic) > 0){
+  
+    
+    if(count($productPic) > 0){
 		$pic_url = $base_url.'user/pic/'.$value->id.'/'.basename($productPic[0]);
 	 }else{
 		$pic_url = $base_url.'img/demo-image.png';
 	 }
 
-	echo '<a href="'.$home_url.'single?id='.$value->id.'&name='.$value->name.'&description='.$value->info.'&price='.$value->price.'"><article style="position: absolute; width: 100%; opacity: 0;">					
+	echo '<article style="position: absolute; width: 100%; opacity: 0;">					
 					<div class="banner-matter">
 					<div class="col-md-5 banner-bag">
 						<img class="img-responsive " src="'.$pic_url.'" alt=" " />
@@ -46,12 +49,12 @@ foreach($products as $value){
 						
 							<label>'.$value->name.'</label>
 							<p>'.$value->info.'</p>					
-							<span class="on-get">GET NOW</span>
+							<span class="on-get">chat</span>
 						</div>
 						
 						<div class="clearfix"> </div>
 					</div>					
-			</article></a>';
+			</article>';
 
 
 }
@@ -83,73 +86,38 @@ foreach($products as $value){
 			<?php 
 			
 					for($i = 0; $i < $len; $i++){
-						if($i==2){
-							break;
-						}else{
-							$productPic = glob(PUB . "user/pic/" . $products[$i]->id. "/*.{jpg,gif,png}", GLOB_BRACE);
-							echo '<a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'">				 
+						
+                            $productPic = glob(PUB . "user/pic/" . $products[$i]->id. "/*.{jpg,gif,png}", GLOB_BRACE);
+                            if(count($productPic) > 0){
+                                $pic_url = $base_url.'user/pic/'.$products[$i]->id.'/'.basename($productPic[0]);
+                             }else{
+                                $pic_url = $base_url.'img/demo-image.png';
+                             }
+							echo '<a href="'.$home_url.'single.php">				 
 									<div class="col-md-6 con-sed-grid">
 								
 										<div class=" elit-grid"> 
-									
-											<h4>SPONSORED</h4>
 											<label>'.$products[$i]->name.'</label>
-										<p>'.$products[$i]->info.'</p>
-										<span class="on-get">GET NOW</span>						
+                                        <p>'.$products[$i]->info.'</p>
+                                					
 									</div>						
-									<img class="img-responsive shoe-left" src="'.$base_url.'user/pic/'.$products[$i]->id.'/'.basename($productPic[0]).'" alt=" " />
-								
-									<div class="clearfix"> </div>
+									<img class="img-responsive shoe-left" src="'.$pic_url.'" alt=" " />
+                                   
+                                    <div class="clearfix"> </div>
+                                    <a class="now-get get-cart" href="#">Chat</a>
 							
 									</div>
 								</a>';
-						}
+						
 					}
 			
 			
 			?>
 	   		     </div>
 	   		     <div class="products">
-	   		     	<h5 class="latest-product">LATEST PRODUCTS</h5>	
-	   		     	  <a class="view-all" href="product.html">VIEW ALL<span> </span></a> 		     
 	   		     </div>
 	   		     <div class="product-left">
-								 <?php 
-								 		$pic_url = '';
-								 		for($i = 0; $i < $len; $i++){
-											 $productPic = glob(PUB . "user/pic/" . $products[$i]->id. "/*.{jpg,gif,png}", GLOB_BRACE);
-
-											 if(count($productPic) > 0){
-												$pic_url = $base_url.'user/pic/'.$products[$i]->id.'/'.basename($productPic[0]);
-											 }else{
-												$pic_url = $base_url.'img/demo-image.png';
-											 }
-
-
-											 $class = 'col-md-4 chain-grid';
-											if(($i+1)%3 == 0){
-												$class = 'col-md-4 chain-grid grid-top-chain';
-											}
-
-											 echo '<div class="'.$class.'">
-											 <a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'" ><img class="img-responsive chain" src="'.$pic_url.'"/></a>
-											 <span class="star"> </span>
-											 <div class="grid-chain-bottom">
-												 <h6><a href="<?php echo $home_url?>single.php">'.$products[$i]->name.'</a></h6>
-												 <div class="star-price">
-													 <div class="dolor-grid"> 
-														 <span class="actual">'.$products[$i]->price.'$</span>
-														 <span class="reducedfrom">400$</span>
-														 
-														
-													 </div>
-													 <a class="now-get get-cart" href="#">Chat</a> 
-													 </div>
-													 </div>
-												 </div>';
-										 }
-								 
-								 ?>
+								
 
 	   		     	 
 	   		     	
@@ -168,18 +136,18 @@ foreach ($categories as $value){
 			echo '<li class="item1"><a href="#">'.$value->name.'<img class="arrow-img" style="float:right; margin-top:20px" src="'.$base_url.'images/arrow1.png" alt=""/> </a>
 			<ul class="cute">
 
-									'.getSubCategory($value->id,$subcategories,$home_url).'
+									'.getSubCategory($value->id,$subcategories,$logged_in).'
 
 			</ul>
 		</li>';
 		}
 }
 
-function getSubCategory($id,$subcategories,$home_url)
+function getSubCategory($id,$subcategories,$logged_in)
 {
 	foreach($subcategories as $value){
 		  if($value->category_Id == $id){
-			    return '<li class="subitem"><a href="'.$home_url.'index?subCategory='.$value->id.'">'.$value->name.' </a></li>';
+			    return '<li class="subitem"><a href="'.$logged_in.'requestList?subCategory='.$value->id.'">'.$value->name.' </a></li>';
 			}
 	}
 }
@@ -195,7 +163,7 @@ function getSubCategory($id,$subcategories,$home_url)
 					if($this->model->haveSubCategory($value->id)){
 					
 					}else{
-						echo '<li><a href="'.$home_url.'index?category='.$value->id.'">'.$value->name.'</a></li>';
+						echo '<li><a href="'.$logged_in.'requestList?category='.$value->id.'">'.$value->name.'</a></li>';
 					}
 			}
 					?>

@@ -7,7 +7,6 @@
 			$subcategories = $this->model->getAllSubCategory();
 			$productDetails = $this->model->getProductDescription($_GET['id']);
 
-			print_r($_GET['id']);
 	
 	
 	?>
@@ -39,7 +38,7 @@
 					<h4><?php echo $_GET['name']; ?></h4>
 				<div class="cart-b">
 					<div class="left-n ">$<?php echo $_GET['price']; ?></div>
-					<a class="now-get get-cart-in" href="#">Add To Favorite</a> 
+					<a class="now-get get-cart-in" href="<?php echo $home_url;?>favorite?id=<?php echo $_GET['id']; ?>">Add To Favorite</a> 
 					<div class="clearfix"></div>
 					<br>
 					<a class="now-get get-cart-in" href="#">Chat</a> 

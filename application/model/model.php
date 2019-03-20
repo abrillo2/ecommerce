@@ -954,6 +954,67 @@ class Model
                     }
 
 
+                    // handling user favorite picks
 
-   
+                    public function addToFavorite($productId,$userId)
+                    {
+                        # code...
+
+                        if($this->checkFavorite($productId,$userId)){
+                            echo('<p>already added</p>');
+                            return;
+                        }
+
+                        $data = array(
+                            ':product_id' => $productId,
+                            ':user_id' => $userId,
+                        );
+        
+                        $sql = "INSERT INTO favorite(product_id,user_id) 
+                                                     VALUES (:product_id,:user_id)";
+                        $query = $this->db->prepare($sql);
+                        $query->execute($data);
+                    }
+                    
+                    
+                    public function checkFavorite($productId,$userId)
+                    {
+                        # code...
+                             $sql = "SELECT user_id as id FROM favorite WHERE user_id='".$userId."'  AND product_id='".$productId."'";
+
+        
+                        
+                            $query = $this->db->prepare($sql);
+                            $query->execute();
+                                
+                            
+
+                            $result = $query->fetch();
+
+                            if($result == ''){
+                                        
+                                return false;
+                            
+                                
+                            }else{
+                                return true;
+                            
+                                
+                            }
+                    }
+
+                    public function getFavorite($userId)
+                    {
+                       # code...
+                       $sql = "SELECT p.* FROM product as p, favorite as f WHERE p.id = f.product_id And f.user_id= '".$userId."'";
+                       $query = $this->db->prepare($sql);
+                       $query->execute();
+                       
+                       $result = $query->fetchAll();
+               
+                       return $result;
+
+
+
+                    }
 }

@@ -132,7 +132,7 @@ foreach($products as $value){
 											}
 
 											 echo '<div class="'.$class.'">
-											 <a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'" ><img class="img-responsive chain" src="'.$pic_url.'"/></a>
+											 <a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'&owner='.$products[$i]->user_email.'" ><img class="img-responsive chain" src="'.$pic_url.'" style="height: 200px;"/></a>
 											 <span class="star"> </span>
 											 <div class="grid-chain-bottom">
 												 <h6><a href="<?php echo $home_url?>single.php">'.$products[$i]->name.'</a></h6>
@@ -143,7 +143,7 @@ foreach($products as $value){
 														 
 														
 													 </div>
-													 <a class="now-get get-cart" href="#">Chat</a> 
+													 <a class="now-get get-cart" href="'.$logged_in.'chats?owner='.$products[$i]->user_email.'">Chat</a> 
 													 </div>
 													 </div>
 												 </div>';

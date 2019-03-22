@@ -82,9 +82,82 @@ class Session extends Controller
  
              if(isset($_SESSION["userName"]) && isset($_SESSION["userEmail"]))
              {
-                 
-                   require APP . 'view/session/chats.php';
+                  require APP . 'view/session/sessionHeader.php';  
+                  require APP . 'view/session/chats.php';
+             }else{
+                  header("Location:".URL2."/ecommerce/home/login"); /* Redirect browser */
+                  exit();
+                  return;
              }
+      }
+
+
+      //save chat
+
+      public function saveChat(Type $var = null)
+      {
+            # code...
+
+            if(isset($_GET['from']) && isset($_GET['to']) && isset($_GET['chat'])){
+
+                  $this->model->sendChat($_GET['from'],$_GET['to'],$_GET['chat']);
+
+                  $ProductDescription = array(1,2,3);
+                  echo(json_encode($ProductDescription));
+            }else{
+                  return;
+            }
+      }
+
+      //get chat
+
+      public function getChat(Type $var = null)
+      {
+            # code...
+
+            session_start();
+            session_write_close();
+
+            if(isset($_GET['from']) && isset($_GET['to']))
+            {
+                $result =  $this->model->getChat($_GET['from'],$_GET['to']);
+
+                
+                
+                return $result;
+               
+                 
+            }else{
+                return '';
+            }
+
+      }
+
+      //udate user with new chat
+
+      public function updateChat()
+      {
+            # code...
+            session_start();
+            session_write_close();
+
+            if(isset($_GET['count'])){
+                 $chat = $this->model->newChat(intval($_GET['count']),$_GET['id'],$_SESSION['userEmail']);
+                 
+                  if($chat== strval(0)){
+
+                        $ProductDescription = array(0);
+                        echo(json_encode( $ProductDescription ));
+
+                  }else{
+                        $ProductDescription = array($chat->chat);
+                        echo(json_encode( $ProductDescription ));
+
+                  }
+
+               
+            }
+           
       }
 }
 

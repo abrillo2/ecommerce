@@ -41,7 +41,7 @@
 					<a class="now-get get-cart-in" href="<?php echo $home_url;?>favorite?id=<?php echo $_GET['id']; ?>">Add To Favorite</a> 
 					<div class="clearfix"></div>
 					<br>
-					<a class="now-get get-cart-in" href="#">Chat</a> 
+					<a class="now-get get-cart-in" href="<?php echo $logged_in.'chats?owner='.$_GET['owner']?>">Chat</a> 
 				    <div class="clearfix"></div>
 				 </div>
 			   	<p><?php echo $_GET['description']; ?></p>

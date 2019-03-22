@@ -25,6 +25,12 @@ class Home extends Controller
         session_start();
         session_write_close();
 
+
+        if(isset($_GET['name']) && isset($_GET['description']) && isset($_GET['price']) && isset($_GET['owner']) && isset($_GET)){
+            
+        }else{return;}
+
+
         if(isset($_SESSION["userName"]) && isset($_SESSION["userEmail"]))
         {
             require APP . 'view/session/sessionHeader.php';

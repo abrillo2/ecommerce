@@ -49,7 +49,7 @@ foreach($products as $value){
 						
 							<label>'.$value->name.'</label>
 							<p>'.$value->info.'</p>					
-							<span class="on-get">chat</span>
+							<a class="now-get get-cart" href="'.$logged_in.'chats">Chat</a> 
 						</div>
 						
 						<div class="clearfix"> </div>
@@ -104,7 +104,7 @@ foreach($products as $value){
 									<img class="img-responsive shoe-left" src="'.$pic_url.'" alt=" " />
                                    
                                     <div class="clearfix"> </div>
-                                    <a class="now-get get-cart" href="#">Chat</a>
+                                    <a class="now-get get-cart" href="'.$logged_in.'chats?owner='.$products[$i]->user_email.'">Chat</a>
 							
 									</div>
 								</a>';

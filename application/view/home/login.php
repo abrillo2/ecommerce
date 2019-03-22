@@ -1,4 +1,8 @@
-   <div class="container">
+  
+	<?php
+	$categories = $this->model->getCategory();
+  $subcategories = $this->model->getAllSubCategory();?>
+	 <div class="container">
 		
       	   <div class="account_grid">
 			   <div class=" login-right">
@@ -31,52 +35,47 @@
 				<div class=" top-nav rsidebar span_1_of_left">
 					<h3 class="cate">CATEGORIES</h3>
 		 <ul class="menu">
-		<li class="item1"><a href="<?php echo $home_url; ?>#">Curabitur sapien<img class="arrow-img" src="<?php echo $base_url;?>images/arrow1.png" alt=""/> </a>
+		 <?php 
+
+foreach ($categories as $value){
+		if($this->model->haveSubCategory($value->id)){
+			echo '<li class="item1"><a href="#">'.$value->name.'<img class="arrow-img" style="float:right; margin-top:20px" src="'.$base_url.'images/arrow1.png" alt=""/> </a>
 			<ul class="cute">
-				<li class="subitem1"><a href="<?php echo $home_url; ?>product">Cute Kittens </a></li>
-				<li class="subitem2"><a href="<?php echo $home_url; ?>product">Strange Stuff </a></li>
-				<li class="subitem3"><a href="<?php echo $home_url; ?>product">Automatic Fails </a></li>
+
+									'.getSubCategory($value->id,$subcategories,$home_url).'
+
 			</ul>
-		</li>
-		<li class="item2"><a href="<?php echo $home_url; ?>#">Dignissim purus <img class="arrow-img " src="<?php echo $base_url ;?>images/arrow1.png" alt=""/></a>
-			<ul class="cute">
-				<li class="subitem1"><a href="<?php echo $home_url; ?>product">Cute Kittens </a></li>
-				<li class="subitem2"><a href="<?php echo $home_url; ?>product">Strange Stuff </a></li>
-				<li class="subitem3"><a href="<?php echo $home_url; ?>product">Automatic Fails </a></li>
-			</ul>
-		</li>
-		<li class="item3"><a href="<?php echo $home_url; ?>#">Ultrices id du<img class="arrow-img img-arrow" src="<?php echo $base_url; ?>images/arrow1.png" alt=""/> </a>
-			<ul class="cute">
-				<li class="subitem1"><a href="<?php echo $home_url; ?>product">Cute Kittens </a></li>
-				<li class="subitem2"><a href="<?php echo $home_url; ?>product">Strange Stuff </a></li>
-				<li class="subitem3"><a href="<?php echo $home_url; ?>product">Automatic Fails</a></li>
-			</ul>
-		</li>
-		<li class="item4"><a href="<?php echo $home_url; ?>#">Cras iacaus rhone <img class="arrow-img img-left-arrow" src="<?php echo $base_url; ?>images/arrow1.png" alt=""/></a>
-			<ul class="cute">
-				<li class="subitem1"><a href="<?php echo $home_url; ?>product">Cute Kittens </a></li>
-				<li class="subitem2"><a href="<?php echo $home_url; ?>product">Strange Stuff </a></li>
-				<li class="subitem3"><a href="<?php echo $home_url; ?>product">Automatic Fails </a></li>
-			</ul>
-		</li>
-				<li>
+		</li>';
+		}
+}
+
+function getSubCategory($id,$subcategories,$home_url)
+{
+	foreach($subcategories as $value){
+		  if($value->category_Id == $id){
+			    return '<li class="subitem"><a href="'.$home_url.'index?subCategory='.$value->id.'">'.$value->name.' </a></li>';
+			}
+	}
+}
+
+?>
+
+		
+		
 			<ul class="kid-menu">
-				<li><a href="<?php echo $home_url; ?>product">Tempus pretium</a></li>
-				<li ><a href="<?php echo $home_url; ?>product">Dignissim neque</a></li>
-				<li ><a href="<?php echo $home_url; ?>product">Ornared id aliquet</a></li>
-			</ul>
-		</li>
-		<ul class="kid-menu ">
-				<li><a href="<?php echo $home_url; ?>product">Commodo sit</a></li>
-				<li ><a href="<?php echo $home_url; ?>product">Urna ac tortor sc</a></li>
-				<li><a href="<?php echo $home_url; ?>product">Ornared id aliquet</a></li>
-				<li><a href="<?php echo $home_url; ?>product">Urna ac tortor sc</a></li>
-				<li ><a href="<?php echo $home_url; ?>product">Eget nisi laoreet</a></li>
-				<li><a href="<?php echo $home_url; ?>product">Faciisis ornare</a></li>
-				<li class="menu-kid-left"><a href="<?php echo $home_url; ?>contact">Contact us</a></li>
+					 
+					<?php 
+				foreach ($categories as $value){
+					if($this->model->haveSubCategory($value->id)){
+					
+					}else{
+						echo '<li><a href="'.$home_url.'index?category='.$value->id.'">'.$value->name.'</a></li>';
+					}
+			}
+					?>
+			
 			</ul>
 		
-	</ul>
 					</div>
 				<!--initiate accordion-->
 		<script type="text/javascript">

@@ -1017,4 +1017,173 @@ class Model
 
 
                     }
+
+
+                    //chat model
+
+                    /**
+                     * save chat
+                     */
+
+                    public function sendChat($from,$to,$chat)
+                    {
+                        
+                        if( strcasecmp($from,$to) > 0){
+                            $totalMesageIndentifier = $from.':'.$to;
+                        }else{
+                            $totalMesageIndentifier = $to.':'.$from;
+                        }
+
+                         $sql = "INSERT INTO total_chat (id, total_chat) VALUES (:id, :totalChat)  ON DUPLICATE KEY UPDATE total_chat = total_chat + 1";
+                         $query = $this->db->prepare($sql);
+                         $parameters = array(':id' => $totalMesageIndentifier, ':totalChat' => 1);
+             
+                         // useful for debugging: you can see the SQL behind above construction by using:
+                         // echo '[ PDO DEBUG ]: ' . Helper::debugPDO($sql, $parameters);  exit();
+                         $query->execute($parameters);
+                         
+                         
+                         $chatCount = $this->getMessageCount($totalMesageIndentifier)->total_chat;
+
+                         $chatId = $totalMesageIndentifier.':'.strval($chatCount);
+
+                         $sql = "INSERT INTO chat (id, chat, user_id) VALUES (:id, :chat, :from)";
+                         $query = $this->db->prepare($sql);
+                         $parameters = array(':id' => $chatId, ':chat' => $chat,':from' => $from);
+
+                         $query->execute($parameters);
+
+
+                    }
+
+                    /**
+                     * get message count
+                     */
+
+                     public function getMessageCount($id)
+                     {
+                         # code...
+                         $sql = "SELECT total_chat FROM total_chat WHERE id='".$id."'";
+
+       
+      
+                         $query = $this->db->prepare($sql);
+                         $query->execute();
+                             
+                         
+                  
+                         $result = $query->fetch();
+                  
+                        
+                        return $result;
+                            
+                             
+                         
+                    }
+
+
+                    /**
+                     * get chats
+                     */
+
+                    public function getChat($user1, $user2)
+                    {
+                        # code...
+                        if( strcasecmp($user1,$user2) > 0){
+                            $totalMesageIndentifier = $user1.':'.$user2;
+                        }else{
+                            $totalMesageIndentifier = $user2.':'.$user1;
+                        }
+
+
+                        $sql = "SELECT * FROM chat WHERE id LIKE '%".$totalMesageIndentifier."%'";
+
+       
+      
+                        $query = $this->db->prepare($sql);
+                        $query->execute();
+                            
+                        
+                 
+                        $result = $query->fetchAll();
+                 
+                       
+                       return $result;
+
+
+                    }
+
+                    /**
+                     * get latest chat
+                     */
+
+                     public function newChat($count,$id,$to)
+                     {
+                         # code...
+                        
+                       /*  $current = $count + 1;
+
+                         $sql = "SELECT total_chat  FROM total_chat WHERE total_chat='".$current."'";
+
+        
+       
+                         $query = $this->db->prepare($sql);
+                         $query->execute();
+                             
+                         
+                 
+                         $result = $query->fetch();
+                         
+                 
+                         if($result == ''){
+                                     
+                             return null;
+                            
+                             
+                         }else{
+
+                            $current = $id.':'.strval($count);
+
+                            $sql = "SELECT chat  FROM chat WHERE id='".$current."'";
+
+        
+       
+                            $query = $this->db->prepare($sql);
+                            $query->execute();
+                                
+                            
+                    
+                            $result = $query->fetch();
+                            
+                            return $result;
+                            
+                             
+                         }*/
+
+                         $current = $id.':'.strval($count);
+
+                         $sql = "SELECT chat  FROM chat WHERE id='".$current."' AND user_Id != '".$to."'";
+
+     
+    
+                         $query = $this->db->prepare($sql);
+                         $query->execute();
+                             
+                         
+                 
+                         $result = $query->fetch();
+
+                         if($result == ''){
+                                     
+                            return 0;
+                        }
+                         
+                         return $result;
+
+
+
+
+                     }
+
+
 }

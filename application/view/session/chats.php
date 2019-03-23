@@ -35,41 +35,103 @@
 	$to = $_GET['owner'];
 	$from = $_SESSION['userEmail'];
 	$accountInfo = $this->model->getuser($_SESSION['userEmail']);
-
-
 	$chats =  $this->model->getChat($to,	$from);
-	
+	$chatHeadCount = 1;
+	$totalChatId;
+
+
+	if( strcasecmp($from,$to) > 0){
+		$totalChatId = $from.':'.$to;
+	}else{
+			$totalChatId = $to.':'.$from;
+	}
+
+	if(count($chats) > 0){
+
+		usort($chats, "cmp");
+		$chatHeadId = $chats[count($chats)-1]->id;
+		$chatHeadExplode = explode(":", $chatHeadId);
+		$chatHeadCount = intval($chatHeadExplode[2]) + 1;
+
+		$totalChatId = $chatHeadExplode[0].':'.$chatHeadExplode[1];
+
+	} 
+	//user contacts
+
+	$contact = $this->model->getContacts($_SESSION['userEmail']);
+	$contacts = array();
+
+	foreach($contact as $value){
+		 $userEmail = explode(":",$value->id);
+
+		 if($userEmail[0] == $_SESSION['userEmail']){
+
+				$userInfo1 = $this->model->getuser($userEmail[1]);
+				$user_profile_pic = $userInfo1->user_profile_pic;
+				$userdir = str_replace(' ', '', $userEmail[1]);
+
+				$profilePicPath1 = "100.png";
+
+				if($user_profile_pic=="100.png"){
+						$profilePicPath1 == "100.png";
+				}else{
+						$profilePicPath1 = $userdir .'/'.$user_profile_pic;
+				}
+
+
+			  array_push($contacts,array('email'=>$userEmail[1],'profile_pic'=> $profilePicPath1,'name'=>$userInfo1->user_name));
+		 }else{
+
+				$userInfo1 = $this->model->getuser($userEmail[0]);
+				$user_profile_pic = $userInfo1->user_profile_pic;
+				$userdir = str_replace(' ', '', $userEmail[0]);
+
+				$profilePicPath1 = "100.png";
+
+				if($user_profile_pic=="100.png"){
+						$profilePicPath1 == "100.png";
+				}else{
+						$profilePicPath1 = $userdir .'/'.$user_profile_pic;
+				}
+
+				array_push($contacts,array('email'=>$userEmail[0],'profile_pic'=> $profilePicPath1,'name'=>$userInfo1->user_name));
+		 }
+		 
+	}
 
 	
-	usort($chats, "cmp");
 
-	print_r($chats);
-	
-	
-	$chatHeadId = $chats[count($chats)-1]->id;
-	$chatHeadExplode = explode(":", $chatHeadId);
-	$chatHeadCount = intval($chatHeadExplode[2]);
 
-	$totalChatId = $chatHeadExplode[0].':'.$chatHeadExplode[1];
 
-	print_r($totalChatId);
+
   
+	$user_profile_pic = $userInfo->user_profile_pic;
+	$account_profile_pic = $accountInfo->user_profile_pic;
+
+	$userdir = str_replace(' ', '', $_GET['owner']);
+	$accountdir = str_replace(' ','',$_SESSION['userEmail']);
 
 
 
-$user_profile_pic = $userInfo->user_profile_pic;
-$account_profile_pic = $accountInfo->user_profile_pic;
+	$profilePicPath = "100.png";
 
-$userdir = str_replace(' ', '', $_GET['owner']);
-$accountdir = str_replace(' ','',$_SESSION['userEmail']);
+	if($user_profile_pic=="100.png"){
+			$profilePicPath == "100.png";
+	}else{
+			$profilePicPath = $userdir .'/'.$user_profile_pic;
+	}
 
-$profilePicPath = "100.png";
 
-if($user_profile_pic=="100.png"){
-		$profilePicPath == "100.png";
-}else{
-		$profilePicPath = $userdir .'/'.$user_profile_pic;
-}
+	$acountPicPath = "100.png";
+
+	if($account_profile_pic=="100.png"){
+			$acountPicPath == "100.png";
+	}else{
+			$acountPicPath = $accountdir .'/'.$account_profile_pic;
+	}
+
+
+	//print_r($contacts);
 ?>
 
 		<div class="container-fluid h-100">
@@ -85,67 +147,35 @@ if($user_profile_pic=="100.png"){
 					</div>
 					<div class="card-body contacts_body">
 						<ui class="contacts">
-						<li class="active">
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="<?php echo $base_url;?>user/pic/<?php echo $profilePicPath?>" class="rounded-circle user_img">
-									<span class="online_icon"></span>
-								</div>
-								<div class="user_info">
-									<span>Maryam Naz</span>
-									<p>Maryam is online</p>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg" class="rounded-circle user_img">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Sahar Darya</span>
-									<p>Sahar left 7 mins ago</p>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://i.pinimg.com/originals/54/6e/6d/546e6d4c6ce4322e6aa3b2f8ca73ac28.jpg" class="rounded-circle user_img">
-									<span class="online_icon"></span>
-								</div>
-								<div class="user_info">
-									<span>Yolduz Rafi</span>
-									<p>Yolduz is online</p>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="http://profilepicturesdp.com/wp-content/uploads/2018/07/sweet-girl-profile-pictures-9.jpg" class="rounded-circle user_img">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Nargis Hawa</span>
-									<p>Nargis left 30 mins ago</p>
-								</div>
-							</div>
-						</li>
-						<li>
-							<div class="d-flex bd-highlight">
-								<div class="img_cont">
-									<img src="https://www.freshmorningquotes.com/wp-content/uploads/2015/11/cute-and-beautifull-girls-profile-pictures.jpg" class="rounded-circle user_img">
-									<span class="online_icon offline"></span>
-								</div>
-								<div class="user_info">
-									<span>Khadija Mehr</span>
-									<p>Khadija left 50 mins ago</p>
-								</div>
-							</div>
-						</li>
-						</ui>
+
+						<?php 
+
+								foreach($contacts as $value){
+
+										$backgroundColor = '';
+										if($value['email'] == $to){
+											$backgroundColor='background-color: rgba(0,0,0,0.3);';
+										}
+
+										echo '
+										<li style="'.$backgroundColor.'">
+											<div class="d-flex bd-highlight">
+												<div class="img_cont">
+													<img src="'.$base_url.'user/pic/'.$value['profile_pic'].'" class="rounded-circle user_img">
+													<span class="online_icon"></span>
+												</div>
+												<div class="user_info">
+												<a href="'.$logged_in.'chats?owner='.$value['email'].'"><span>'.$value['name'].'</span></a>
+													
+													<p>Maryam is online</p>
+												</div>
+											</div>
+										</li>';
+
+								}
+						
+						
+						?>
 					</div>
 					<div class="card-footer"></div>
 				</div></div>
@@ -183,8 +213,15 @@ if($user_profile_pic=="100.png"){
 								
 								for($i=0;$i < count($chats);$i++){
 
+											if($to==$from){
+												break;
+											}
+
+										 $this->model->markChatAsRead($chats[$i]->id);
+
 										 $class = true;
-										 $src =  $base_url.'user/pic/'.$profilePicPath;
+										 $src =  $base_url.'user/pic/'.$profilePicPath;	
+										 $src2 = $base_url.'user/pic/'.$acountPicPath;	
 										 
 										 if($chats[$i]->user_Id == $_SESSION['userEmail']){
 												$class = false;	 
@@ -208,7 +245,7 @@ if($user_profile_pic=="100.png"){
 													 <span class="msg_time_send">8:55 AM, Today</span>
 												 </div>
 												 <div class="img_cont_msg" >
-											 <img  class="rounded-circle user_img_msg">
+											 <img src="'.$src2.'"  class="rounded-circle user_img_msg">
 												 </div>
 											 </div>';
 										 }
@@ -222,8 +259,14 @@ if($user_profile_pic=="100.png"){
 								<div class="input-group-append">
 									<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
 								</div>
-								<textarea id='chat' name="" class="form-control type_msg" placeholder="Type your message..."></textarea>
-								<div class="input-group-append">
+
+								<?php 
+										if($to!=$from){
+											   echo '<textarea id="chat" name="" class="form-control type_msg" placeholder="Type your message..."></textarea>';
+										}
+								?>
+								
+								<div class="input-group-append" id="btn">
 									<span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
 								</div>
 							</div>
@@ -238,12 +281,19 @@ if($user_profile_pic=="100.png"){
 
 
 $(document).ready(function() {
-    $('.input-group-append').click(function(e) {  
+
+
+    $('#btn').click(function(e) {  
+
+
+		
 
 
 		
 
 			var comment = $.trim($("#chat").val());
+			
+
 		
 
 			$.ajax({
@@ -258,12 +308,18 @@ $(document).ready(function() {
 																								<span class="msg_time_send">9:10 AM, Today</span>
 																							</div>
 																							<div class="img_cont_msg">
-																					<img  class="rounded-circle user_img_msg">
+																					<img src="<?php echo $base_url;?>user/pic/<?php echo $acountPicPath?>" class="rounded-circle user_img_msg">
 																							</div>
-																						</div>`)
+																						</div>`);
+														$("#chat").val('');
+														var psconsole = $('#msgCont');
+														if(psconsole.length)
+															psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());
 												
+
 												}
 
+											
 			})
 
      
@@ -284,14 +340,18 @@ $(document).ready(function() {
                         dataType: 'JSON',
                       	success: function(response){
 
-													if(response == String(0)){
-													   alert(count);
+												
 
+													if(response == String(0)){
+												
+													}else if(response == String(1)){
+
+														count++;
 													}else{
 
 														$("#msgCont").append(`<div class="d-flex justify-content-start mb-4">
 								<div class="img_cont_msg">
-									<img src="https://devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" class="rounded-circle user_img_msg">
+									<img src="<?php echo $base_url;?>user/pic/<?php echo $profilePicPath?>" class="rounded-circle user_img_msg">
 								</div>
 								<div class="msg_cotainer" style="min-width:100px;">
 									`+response+`
@@ -300,10 +360,12 @@ $(document).ready(function() {
 							</div>`)
 
 														count++;
-														alert(count);
+													
 													}
 													
-														
+													var psconsole = $('#msgCont');
+														if(psconsole.length)
+															psconsole.scrollTop(psconsole[0].scrollHeight - psconsole.height());		
 												
 												
 												}
@@ -313,6 +375,24 @@ $(document).ready(function() {
 
 	
 		}, 3000); // 30 seconds
+
+
+		$(function () {
+				
+				$("#chat").keypress(function (e) {
+					
+						var code = (e.keyCode ? e.keyCode : e.which);
+						//alert(code);
+						if (code == 13) {
+							
+								$("#btn").trigger('click');
+
+							
+								return true;
+						}
+				});
+		});
+
 
 
 });

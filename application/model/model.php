@@ -1162,7 +1162,7 @@ class Model
 
                          $current = $id.':'.strval($count);
 
-                         $sql = "SELECT chat  FROM chat WHERE id='".$current."' AND user_Id != '".$to."'";
+                         $sql = "SELECT chat,user_Id  FROM chat WHERE id='".$current."'";
 
      
     
@@ -1174,8 +1174,10 @@ class Model
                          $result = $query->fetch();
 
                          if($result == ''){
-                                     
+
                             return 0;
+                        }else if($result->user_Id == $to){
+                            return 1;
                         }
                          
                          return $result;
@@ -1184,6 +1186,71 @@ class Model
 
 
                      }
+
+
+                    /**
+                     * get user contacts
+                     *
+                     */
+
+                     public function getContacts($id)
+                     {
+                         # code...
+                         $sql = "SELECT * FROM total_chat WHERE id LIKE '%".$id."%'";
+
+       
+      
+                         $query = $this->db->prepare($sql);
+                         $query->execute();
+                             
+                         
+                  
+                         $result = $query->fetchAll();
+                  
+                        
+                         return $result;
+                     }
+
+
+                     /**
+                      * get unread messages
+                      */
+
+                      public function getUnreadMessage($id)
+                      {
+                          # code...
+
+                          $sql = "SELECT * FROM chat WHERE id LIKE '%".$id."%' and user_id !='".$id."' and status= 0";
+
+       
+      
+                          $query = $this->db->prepare($sql);
+                          $query->execute();
+                              
+                          
+                   
+                          $result = $query->fetchAll();
+                   
+                         
+                          return $result;
+
+                      }
+
+                      /**
+                       * mark message as read
+                       */
+
+                       public function markChatAsRead($id)
+                       {
+                           # code...
+                           $data = array(':id' => $id,':status' => 1);
+
+                           $sql = "UPDATE chat  SET status = :status WHERE id=:id";   
+                              
+                           $query = $this->db->prepare($sql);
+                       
+                           $query->execute($data);
+                       }
 
 
 }

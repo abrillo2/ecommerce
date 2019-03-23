@@ -9,6 +9,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <?php 
 		$base_url = URL2.'/ecommerce/public/';
 		$home_url = URL2.'/ecommerce/home/';
+		$logged_in = URL2.'/ecommerce/session/';
 
 
 ?>

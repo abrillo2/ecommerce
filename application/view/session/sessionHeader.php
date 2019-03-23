@@ -7,6 +7,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 
 <?php 
+
+
+		$messages = $this->model->getUnreadMessage($_SESSION['userEmail']);
+		//print_r($messages);
+
+
 		$base_url = URL2.'/ecommerce/public/';
 		$home_url = URL2.'/ecommerce/home/';
 		$logged_in = URL2.'/ecommerce/session/';
@@ -156,10 +162,35 @@ $('#etalage').etalage({
 							<button class="dropbtn">
 								<div class="button">
 									<i class="fa fa-envelope"></i>
+									<?php 
+											
+												$notificationCount = 0;
+												foreach($messages as $value){
+													if($value->status == 0){
+														$notificationCount++;
+													}
+												}
+
+												if($notificationCount > 0){
+												    echo '<span class="button__badge">'.$notificationCount.'</span>';
+												}
+									?>
 								
 								</div>
 							</button>
 							<div class="dropdown-content">
+
+							<?php 
+												
+												foreach($messages as $value){
+
+															if($value->status == 0){
+															  	echo "<a href='".$logged_in."chats?owner=".$value->user_Id."'>".$value->chat."</a>";
+															}
+														 
+												     
+												}
+									?>
 								
 							</div>
 					</div>

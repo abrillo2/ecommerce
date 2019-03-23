@@ -80,8 +80,15 @@ class Session extends Controller
              session_write_close();
      
  
-             if(isset($_SESSION["userName"]) && isset($_SESSION["userEmail"]))
+             if(isset($_SESSION["userName"]) && isset($_SESSION["userEmail"]) && isset($_GET['owner']))
+             
              {
+
+                  $userInfo = $this->model->getUser($_GET['owner']);
+
+                  if($userInfo == ''){
+                        return;
+                  }
                   require APP . 'view/session/sessionHeader.php';  
                   require APP . 'view/session/chats.php';
              }else{
@@ -149,7 +156,14 @@ class Session extends Controller
                         $ProductDescription = array(0);
                         echo(json_encode( $ProductDescription ));
 
+                  }else if($chat== strval(1)){
+
+                        $ProductDescription = array(1);
+                        echo(json_encode( $ProductDescription ));
+
                   }else{
+
+                       // $this->model->markChatAsRead($chat->id);
                         $ProductDescription = array($chat->chat);
                         echo(json_encode( $ProductDescription ));
 

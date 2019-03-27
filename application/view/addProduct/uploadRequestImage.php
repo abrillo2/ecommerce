@@ -29,7 +29,7 @@
 
     $("#file-1").fileinput({
         uploadUrl: '<?php echo $add_product_url?>uploadRequestPic', // you must set a valid URL here else you will get an error
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        allowedFileExtensions: ['jpg', 'png', 'gif','jpeg'],
         overwriteInitial: false,
         maxFileSize: 1000,
         maxFilesNum: 10,

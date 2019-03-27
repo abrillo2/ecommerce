@@ -764,7 +764,14 @@ class Model
 
                 $name=$_POST['name'];
                 $category_Id=$_POST['category_Id'];
-                $sub_category_Id=$_POST['sub_category_Id'];
+                
+                if(isset($_POST['sub_category_Id']) && $_POST['sub_category_Id'] != ''){
+                    $sub_category_Id=$_POST['sub_category_Id'];
+                }else{
+                    $sub_category_Id =NULL;
+                }
+
+
                 $user_email=$_SESSION["userEmail"];
                 $price =$_POST['price'];
                 $info = $_POST['Info'];
@@ -860,7 +867,11 @@ class Model
     
                     $name=$_POST['name'];
                     $category_Id=$_POST['category_Id'];
-                    $sub_category_Id=$_POST['sub_category_Id'];
+                    if(isset($_POST['sub_category_Id']) && $_POST['sub_category_Id'] != ''){
+                        $sub_category_Id=$_POST['sub_category_Id'];
+                    }else{
+                        $sub_category_Id =NULL;
+                    }
                     $user_email=$_SESSION["userEmail"];
                     $price =$_POST['price'];
                     $info = $_POST['Info'];
@@ -922,6 +933,27 @@ class Model
               
                       return $result;
                   }
+
+
+
+                  /**
+                   * get unapproved products
+                   */
+
+                  public function getUnApprovedProducts(Type $var = null)
+                  {
+                      # code...
+                      $sql = "SELECT *  FROM product where status=0";
+        
+                      $query = $this->db->prepare($sql);
+                      $query->execute();
+                        
+                      $result = $query->fetchAll();
+            
+                      return $result;
+                  }
+        
+                
    
                   /**
                    * get request by subCategory
@@ -952,6 +984,22 @@ class Model
                 
                         return $result;
                     }
+
+
+                    //get unpproved request
+
+                    public function getUnApprovedRequest(Type $var = null)
+                  {
+                      # code...
+                      $sql = "SELECT *  FROM buy_request where status=0";
+        
+                      $query = $this->db->prepare($sql);
+                      $query->execute();
+                        
+                      $result = $query->fetchAll();
+            
+                      return $result;
+                  }
 
 
                     // handling user favorite picks
@@ -1211,6 +1259,55 @@ class Model
                          return $result;
                      }
 
+                     /**
+                      * get All contacts
+                      */
+
+                      public function getAllContacts()
+                      {
+                          # code...
+                          $sql = "SELECT * FROM total_chat";
+
+       
+      
+                          $query = $this->db->prepare($sql);
+                          $query->execute();
+                              
+                          
+                   
+                          $result = $query->fetchAll();
+                   
+                         
+                          return $result;
+
+                      }
+
+
+                      /**
+                       * get all chats
+                       */
+
+                      public function getAllChat($id)
+                      {
+                          
+  
+  
+                          $sql = "SELECT * FROM chat WHERE id LIKE '%".$id."%'";
+  
+         
+        
+                          $query = $this->db->prepare($sql);
+                          $query->execute();
+                              
+                          
+                   
+                          $result = $query->fetchAll();
+                   
+                         
+                         return $result;
+  
+  
+                      }
 
                      /**
                       * get unread messages
@@ -1251,6 +1348,134 @@ class Model
                        
                            $query->execute($data);
                        }
+
+
+                       //admin model
+
+                       /**
+                        * login in admin
+                        */
+
+                        public function loginAdmin($email , $password)
+                        {
+                            # code...
+
+                            $sql = "SELECT * FROM admin WHERE email='".$email."' AND password='".$password."'";
+
+                            $query = $this->db->prepare($sql);
+                            $query->execute();
+                            
+                            $result = $query->fetch();
+                
+                            if(is_object($result)){
+                
+                                if($result->id == ''){
+                                    return false;
+                                }else{
+                
+                                    session_start();
+                                    $_SESSION["adminName"] = $result->name;
+                                    $_SESSION["adminEmail"] = $email;
+                                    session_write_close();
+                                    return true;
+                                }
+                
+                            }else{
+                
+                                return false;
+                            }
+
+                        }
+
+
+                        /**
+                         * approve product by admin
+                         */
+
+                         public function approveProduct($id)
+                         {
+                             # code...
+                                $data = array(':id' => $id,':status' => 1);
+
+                                $sql = "UPDATE product  SET status = :status WHERE id=:id";   
+                                
+                                $query = $this->db->prepare($sql);
+                            
+                                $query->execute($data);
+                         }
+
+                         public function approveAllProduct()
+                         {
+                             # code...
+                                $data = array(':status' => 1);
+
+                                $sql = "UPDATE product  SET status = :status WHERE status=0";   
+                                
+                                $query = $this->db->prepare($sql);
+                            
+                                $query->execute($data);
+                         }
+
+
+                         /**
+                          * disApprove product
+                          */
+
+                          public function disapproveProduct($id)
+                          {
+                              # code...
+
+                              $sql = "DELETE FROM product WHERE id = :id";
+                              $query = $this->db->prepare($sql);
+                              $parameters = array(':id' => $id);
+                                           
+                              $query->execute($parameters);
+                          }
+
+
+                          /**
+                         * approve Request by admin
+                         */
+
+                         public function approveRequest($id)
+                         {
+                             # code...
+                                $data = array(':id' => $id,':status' => 1);
+
+                                $sql = "UPDATE buy_request  SET status = :status WHERE id=:id";   
+                                
+                                $query = $this->db->prepare($sql);
+                            
+                                $query->execute($data);
+                         }
+
+                         public function approveAllRequest()
+                         {
+                             # code...
+                                $data = array(':status' => 1);
+
+                                $sql = "UPDATE buy_request  SET status = :status WHERE status=0";   
+                                
+                                $query = $this->db->prepare($sql);
+                            
+                                $query->execute($data);
+                         }
+
+
+                         /**
+                          * disApprove Request
+                          */
+
+                          public function disapproveRequest($id)
+                          {
+                              # code...
+
+                              $sql = "DELETE FROM buy_request WHERE id = :id";
+                              $query = $this->db->prepare($sql);
+                              $parameters = array(':id' => $id);
+                                           
+                              $query->execute($parameters);
+                          }
 
 
 }

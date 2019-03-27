@@ -18,7 +18,7 @@ define('ROOT', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 define('APP', ROOT . 'application' . DIRECTORY_SEPARATOR);
 
 define('PUB', ROOT . 'public' . DIRECTORY_SEPARATOR);
-define('URL2', "https://0684d1ca.ngrok.io");
+define('URL2', "http://localhost");
 
 // This is the (totally optional) auto-loader for Composer-dependencies (to load tools into your project).
 // If you have no idea what this means: Don't worry, you don't need it, simply leave it like it is.

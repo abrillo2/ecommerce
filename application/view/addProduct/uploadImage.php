@@ -29,9 +29,9 @@
 
     $("#file-1").fileinput({
         uploadUrl: '<?php echo $add_product_url?>uploadItem', // you must set a valid URL here else you will get an error
-        allowedFileExtensions: ['jpg', 'png', 'gif'],
+        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],
         overwriteInitial: false,
-        maxFileSize: 1000,
+        maxFileSize: 5000,
         maxFilesNum: 10,
         //allowedFileTypes: ['image', 'video', 'flash'],
         slugCallback: function (filename) {

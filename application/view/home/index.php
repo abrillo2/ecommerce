@@ -1,23 +1,6 @@
 
+
 	<!---->
-	<?php 
-	
-
-			if(isset($_GET['category'])){
-				$products = $this->model->getProductByCategory($_GET['category']);
-			}elseif(isset($_GET['subCategory'])){
-				$products = $this->model->getProductBySubCatergory($_GET['subCategory']);
-			}else{
-				$products = $this->model->getAllProduct();
-			}
-
-			$len = count($products);
-
-			$categories = $this->model->getCategory();
-    	    $subcategories = $this->model->getAllSubCategory();
-	
-	
-	?>
 	<div class="container">
 			<div class="shoes-grid">
 			<a href="<?php echo $home_url?>single">
@@ -29,7 +12,11 @@
 
 foreach($products as $value){
 
-	$productPic = glob(PUB . "user/pic/" . $value->id. "/*.{jpg,gif,png}", GLOB_BRACE);
+	$productPic = glob(PUB . "user/pic/" . $value->id. "/*.{jpg,gif,png,jpeg}", GLOB_BRACE);
+
+	if($value->status == 0){
+		continue;
+	}
 
 	if(count($productPic) > 0){
 		$pic_url = $base_url.'user/pic/'.$value->id.'/'.basename($productPic[0]);
@@ -37,10 +24,10 @@ foreach($products as $value){
 		$pic_url = $base_url.'img/demo-image.png';
 	 }
 
-	echo '<a href="'.$home_url.'single?id='.$value->id.'&name='.$value->name.'&description='.$value->info.'&price='.$value->price.'"><article style="position: absolute; width: 100%; opacity: 0;">					
+	echo '<a href="'.$home_url.'single?id='.$value->id.'&name='.$value->name.'&description='.$value->info.'&price='.$value->price.'&owner='.$value->user_email.'"><article style="position: absolute; width: 100%; opacity: 0;">					
 					<div class="banner-matter">
 					<div class="col-md-5 banner-bag">
-						<img class="img-responsive " src="'.$pic_url.'" alt=" " />
+						<img  src="'.$pic_url.'" alt=" " />
 						</div>
 						<div class="col-md-7 banner-off">							
 						
@@ -83,11 +70,24 @@ foreach($products as $value){
 			<?php 
 			
 					for($i = 0; $i < $len; $i++){
+
+						 
+						if($products[$i]->status == 0){
+							continue;
+						 }
+
 						if($i==2){
 							break;
 						}else{
 							$productPic = glob(PUB . "user/pic/" . $products[$i]->id. "/*.{jpg,gif,png}", GLOB_BRACE);
-							echo '<a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'">				 
+							
+
+							if(count($productPic) > 0){
+								$pic_url = $base_url.'user/pic/'.$value->id.'/'.basename($productPic[0]);
+							}else{
+								$pic_url = $base_url.'img/demo-image.png';
+							}
+							echo '<a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'&owner='.$products[$i]->user_email.'">				 
 									<div class="col-md-6 con-sed-grid">
 								
 										<div class=" elit-grid"> 
@@ -117,6 +117,13 @@ foreach($products as $value){
 								 <?php 
 								 		$pic_url = '';
 								 		for($i = 0; $i < $len; $i++){
+
+
+											 
+											 if($products[$i]->status == 0){
+												continue;
+											 }
+
 											 $productPic = glob(PUB . "user/pic/" . $products[$i]->id. "/*.{jpg,gif,png}", GLOB_BRACE);
 
 											 if(count($productPic) > 0){
@@ -166,22 +173,16 @@ foreach($products as $value){
 foreach ($categories as $value){
 		if($this->model->haveSubCategory($value->id)){
 			echo '<li class="item1"><a href="#">'.$value->name.'<img class="arrow-img" style="float:right; margin-top:20px" src="'.$base_url.'images/arrow1.png" alt=""/> </a>
-			<ul class="cute">
+			<ul class="cute">';
 
-									'.getSubCategory($value->id,$subcategories,$home_url).'
+			foreach($subcategories as $val){
+				if($val->category_Id == $value->id){
+					  echo '<li class="subitem"><a href="'.$home_url.'index?subCategory='.$val->id.'">'.$val->name.' </a></li>';
+				  }
+		   }
 
-			</ul>
-		</li>';
+			echo '</ul></li>';
 		}
-}
-
-function getSubCategory($id,$subcategories,$home_url)
-{
-	foreach($subcategories as $value){
-		  if($value->category_Id == $id){
-			    return '<li class="subitem"><a href="'.$home_url.'index?subCategory='.$value->id.'">'.$value->name.' </a></li>';
-			}
-	}
 }
 
 ?>
@@ -223,111 +224,48 @@ function getSubCategory($id,$subcategories,$home_url)
 			
 			});
 		</script>
-					<div class=" chain-grid menu-chain">
-	   		     		<a href="<?php echo $home_url?>single.php"><img class="img-responsive chain" src="<?php echo $base_url ?>images/wat.jpg" alt=" " /></a>	   		     		
+					<<?php 
+
+			
+			$j = 0;
+			
+			for($i = 0; $i < $len; $i++){
+
+				 
+				if($products[$i]->status == 0){
+					continue;
+				 }else{
+					 $j++;
+				 }
+
+				if($j==2){
+					break;
+				}else{
+					$productPic = glob(PUB . "user/pic/" . $products[$i]->id. "/*.{jpg,gif,png,jpeg}", GLOB_BRACE);
+
+						if(count($productPic) > 0){
+							$pic_url = $base_url.'user/pic/'.$value->id.'/'.basename($productPic[0]);
+						}else{
+							$pic_url = $base_url.'img/demo-image.png';
+						}
+					echo '<div class=" chain-grid menu-chain">
+					     <a href="'.$home_url.'single?id='.$products[$i]->id.'&name='.$products[$i]->name.'&description='.$products[$i]->info.'&price='.$products[$i]->price.'&owner='.$products[$i]->user_email.'"><img class="img-responsive chain" src="'.$base_url.'user/pic/'.$products[$i]->id.'/'.basename($productPic[0]).'" alt=" " /></a>	   		     		
 	   		     		<div class="grid-chain-bottom chain-watch">
-		   		     		<span class="actual dolor-left-grid">300$</span>
+		   		     		<span class="actual dolor-left-grid">'.$products[$i]->price.'$</span>
 		   		     		<span class="reducedfrom">500$</span>  
-		   		     		<h6><a href="<?php echo $home_url?>single.php">Lorem ipsum dolor</a></h6>  		     			   		     										
+		   		     		<h6>'.$products[$i]->name.'</h6>  		     			   		     										
 	   		     		</div>
-	   		     	</div>
+	   		     	</div>';
+
+					
+				}
+			}
+	
+
+?>
 	   		     	 <a class="view-all all-product" href="product.html">VIEW ALL PRODUCTS<span> </span></a> 	
 			</div>
 	   		    <div class="clearfix"> </div>        	         
 		</div>
 	
 	<!---->
-	<div class="footer">
-		<div class="footer-top">
-			<div class="container">
-				<div class="latter">
-					<h6>NEWS-LETTER</h6>
-					<div class="sub-left-right">
-						<form>
-							<input type="text" value="Enter email here"onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter email here';}" />
-							<input type="submit" value="SUBSCRIBE" />
-						</form>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="latter-right">
-					<p>FOLLOW US</p>
-					<ul class="face-in-to">
-						<li><a href="#"><span> </span></a></li>
-						<li><a href="#"><span class="facebook-in"> </span></a></li>
-						<div class="clearfix"> </div>
-					</ul>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-		<div class="footer-bottom">
-			<div class="container">
-				<div class="footer-bottom-cate">
-					<h6>CATEGORIES</h6>
-					<ul>
-						<li><a href="#">Curabitur sapien</a></li>
-						<li><a href="#">Dignissim purus</a></li>
-						<li><a href="#">Tempus pretium</a></li>
-						<li ><a href="#">Dignissim neque</a></li>
-						<li ><a href="#">Ornared id aliquet</a></li>
-						<li><a href="#">Ultrices id du</a></li>
-						<li><a href="#">Commodo sit</a></li>
-						<li ><a href="#">Urna ac tortor sc</a></li>
-						<li><a href="#">Ornared id aliquet</a></li>
-						<li><a href="#">Urna ac tortor sc</a></li>
-						<li ><a href="#">Eget nisi laoreet</a></li>
-						<li ><a href="#">Faciisis ornare</a></li>
-					</ul>
-				</div>
-				<div class="footer-bottom-cate bottom-grid-cat">
-					<h6>FEATURE PROJECTS</h6>
-					<ul>
-						<li><a href="#">Curabitur sapien</a></li>
-						<li><a href="#">Dignissim purus</a></li>
-						<li><a href="#">Tempus pretium</a></li>
-						<li ><a href="#">Dignissim neque</a></li>
-						<li ><a href="#">Ornared id aliquet</a></li>
-						<li><a href="#">Ultrices id du</a></li>
-						<li><a href="#">Commodo sit</a></li>
-					</ul>
-				</div>
-				<div class="footer-bottom-cate">
-					<h6>TOP BRANDS</h6>
-					<ul>
-						<li><a href="#">Curabitur sapien</a></li>
-						<li><a href="#">Dignissim purus</a></li>
-						<li><a href="#">Tempus pretium</a></li>
-						<li ><a href="#">Dignissim neque</a></li>
-						<li ><a href="#">Ornared id aliquet</a></li>
-						<li><a href="#">Ultrices id du</a></li>
-						<li><a href="#">Commodo sit</a></li>
-						<li ><a href="#">Urna ac tortor sc</a></li>
-						<li><a href="#">Ornared id aliquet</a></li>
-						<li><a href="#">Urna ac tortor sc</a></li>
-						<li ><a href="#">Eget nisi laoreet</a></li>
-						<li ><a href="#">Faciisis ornare</a></li>
-					</ul>
-				</div>
-				<div class="footer-bottom-cate cate-bottom">
-					<h6>OUR ADDERSS</h6>
-					<ul>s
-						<li>Aliquam metus  dui. </li>
-						<li>orci, ornareidquet</li>
-						<li> ut,DUI.</li>
-						<li >nisi, dignissim</li>
-						<li >gravida at.</li>
-						<li class="phone">PH : 6985792466</li>
-						<li class="temp"> <p class="footer-class">Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a> </p></li>
-					</ul>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</div>
-	<?php // <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>  ?>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	</body>
-</html>

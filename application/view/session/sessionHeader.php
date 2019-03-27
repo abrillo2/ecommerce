@@ -7,6 +7,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 
 <?php 
+	
+
+	if(isset($_GET['category'])){
+		$products = $this->model->getProductByCategory($_GET['category']);
+	}elseif(isset($_GET['subCategory'])){
+		$products = $this->model->getProductBySubCatergory($_GET['subCategory']);
+	}else{
+		$products = $this->model->getAllProduct();
+	}
+
+	$len = count($products);
+
+	$categories = $this->model->getCategory();
+	$subcategories = $this->model->getAllSubCategory();
+
+
+?>
+
+
+<?php 
 
 
 		$messages = $this->model->getUnreadMessage($_SESSION['userEmail']);

@@ -192,23 +192,24 @@ class AddProduct extends Controller
           
             $this->model->addProductPic($pic_name,intval( $_SESSION['pid']));
 
+           
+           
+           
         
 
         } else {
             $GLOBALS['updateIssue'] = "Sorry server Issue uploading your profile pic.";
+            return;
         }
     }
      
 
 
-	   $uploadImage1 = array();
+	$uploadImage1 = array();
 
     array_push($uploadImage1,"hey");
 
     echo(json_encode($uploadImage1));
-
- 
-
     
   }
 

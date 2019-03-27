@@ -35,30 +35,26 @@
 				<div class=" top-nav rsidebar span_1_of_left">
 					<h3 class="cate">CATEGORIES</h3>
 		 <ul class="menu">
+		
 		 <?php 
 
 foreach ($categories as $value){
 		if($this->model->haveSubCategory($value->id)){
 			echo '<li class="item1"><a href="#">'.$value->name.'<img class="arrow-img" style="float:right; margin-top:20px" src="'.$base_url.'images/arrow1.png" alt=""/> </a>
-			<ul class="cute">
+			<ul class="cute">';
 
-									'.getSubCategory($value->id,$subcategories,$home_url).'
+			foreach($subcategories as $val){
+				if($val->category_Id == $value->id){
+					  echo '<li class="subitem"><a href="'.$home_url.'index?subCategory='.$val->id.'">'.$val->name.' </a></li>';
+				  }
+		   }
 
-			</ul>
-		</li>';
+			echo '</ul></li>';
 		}
 }
 
-function getSubCategory($id,$subcategories,$home_url)
-{
-	foreach($subcategories as $value){
-		  if($value->category_Id == $id){
-			    return '<li class="subitem"><a href="'.$home_url.'index?subCategory='.$value->id.'">'.$value->name.' </a></li>';
-			}
-	}
-}
-
 ?>
+
 
 		
 		
@@ -110,95 +106,3 @@ function getSubCategory($id,$subcategories,$home_url)
 			  <div class="clearfix"> </div>
       	 </div>
 	<!---->
-	<div class="footer">
-		<div class="footer-top">
-			<div class="container">
-				<div class="latter">
-					<h6>NEWS-LETTER</h6>
-					<div class="sub-left-right">
-						<form>
-							<input type="text" value="Enter email here"onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter email here';}" />
-							<input type="submit" value="SUBSCRIBE" />
-						</form>
-					</div>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="latter-right">
-				 
-					<p>FOLLOW US</p>
-					<ul class="face-in-to">
-						<li><a href="<?php echo $home_url; ?>#"><span> </span></a></li>
-						<li><a href="<?php echo $home_url; ?>#"><span class="facebook-in"> </span></a></li>
-						<div class="clearfix"> </div>
-					</ul>
-					<div class="clearfix"> </div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-		<div class="footer-bottom">
-			<div class="container">
-				<div class="footer-bottom-cate">
-					<h6>CATEGORIES</h6>
-					<ul>
-						<li><a href="<?php echo $home_url; ?>#">Curabitur sapien</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Dignissim purus</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Tempus pretium</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Dignissim neque</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Ornared id aliquet</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Ultrices id du</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Commodo sit</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Urna ac tortor sc</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Ornared id aliquet</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Urna ac tortor sc</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Eget nisi laoreet</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Faciisis ornare</a></li>
-					</ul>
-				</div>
-				<div class="footer-bottom-cate bottom-grid-cat">
-					<h6>FEATURE PROJECTS</h6>
-					<ul>
-						<li><a href="<?php echo $home_url; ?>#">Curabitur sapien</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Dignissim purus</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Tempus pretium</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Dignissim neque</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Ornared id aliquet</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Ultrices id du</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Commodo sit</a></li>
-					</ul>
-				</div>
-				<div class="footer-bottom-cate">
-					<h6>TOP BRANDS</h6>
-					<ul>
-						<li><a href="<?php echo $home_url; ?>#">Curabitur sapien</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Dignissim purus</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Tempus pretium</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Dignissim neque</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Ornared id aliquet</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Ultrices id du</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Commodo sit</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Urna ac tortor sc</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Ornared id aliquet</a></li>
-						<li><a href="<?php echo $home_url; ?>#">Urna ac tortor sc</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Eget nisi laoreet</a></li>
-						<li ><a href="<?php echo $home_url; ?>#">Faciisis ornare</a></li>
-					</ul>
-				</div>
-				<div class="footer-bottom-cate cate-bottom">
-					<h6>OUR ADDERSS</h6>
-					<ul>
-						<li>Aliquam metus  dui. </li>
-						<li>orci, ornareidquet</li>
-						<li> ut,DUI.</li>
-						<li >nisi, dignissim</li>
-						<li >gravida at.</li>
-						<li class="phone">PH : 6985792466</li>
-						<li class="temp"> <p class="footer-class">Design by <a href="<?php echo $home_url; ?>http://w3layouts.com/" target="_blank">W3layouts</a> </p></li>
-					</ul>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</div>
-</body>
-</html>

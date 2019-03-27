@@ -35,10 +35,12 @@ class Home extends Controller
         {
             require APP . 'view/session/sessionHeader.php';
             require APP . 'view/home/single.php';
+            require APP . 'view/home/footer.php';
         }else
         {
             require APP . 'view/home/header.php';
             require APP . 'view/home/single.php';
+            require APP . 'view/home/footer.php';
         }
 
        
@@ -59,9 +61,11 @@ class Home extends Controller
         {
             require APP . 'view/session/sessionHeader.php';  
             require APP . 'view/home/index.php';
+            require APP . 'view/home/footer.php';
         }else{
            require APP . 'view/home/header.php'; 
            require APP . 'view/home/index.php';
+           require APP . 'view/home/footer.php';
        }
         
     }
@@ -85,8 +89,9 @@ class Home extends Controller
         }else{
 
             $error ='';
-            require APP . 'view/home/header.php'; 
+            require APP . 'view/home/header.php';
             require APP . 'view/home/login.php';
+            require APP . 'view/home/footer.php';
 
         }
 
@@ -105,6 +110,7 @@ class Home extends Controller
             $error = "<p style="."color:red;"."> wrong userName/password</p>";
             require APP . 'view/home/header.php'; 
             require APP . 'view/home/login.php';
+            require APP . 'view/home/footer.php';
         }
         
     }
@@ -121,6 +127,7 @@ class Home extends Controller
     
        require APP . 'view/home/header.php'; 
        require APP . 'view/home/register.php';
+       require APP . 'view/home/footer.php';
          
      }
 

@@ -5,7 +5,24 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE html>
+<?php 
+	
 
+	if(isset($_GET['category'])){
+		$products = $this->model->getProductByCategory($_GET['category']);
+	}elseif(isset($_GET['subCategory'])){
+		$products = $this->model->getProductBySubCatergory($_GET['subCategory']);
+	}else{
+		$products = $this->model->getAllProduct();
+	}
+
+	$len = count($products);
+
+	$categories = $this->model->getCategory();
+	$subcategories = $this->model->getAllSubCategory();
+
+
+?>
 <?php 
 		$base_url = URL2.'/ecommerce/public/';
 		$home_url = URL2.'/ecommerce/home/';
@@ -39,20 +56,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 
 <script src="<?php echo $base_url ?>js/jquery.etalage.min.js"></script>
 <script>
-			jQuery(document).ready(function($){
+		
 
-				$('#etalage').etalage({
-					thumb_image_width: 400,
-					thumb_image_height: 400,
-					source_image_width: 900,
-					source_image_height: 1200,
-					show_hint: true,
-					click_callback: function(image_anchor, instance_id){
-						alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
-					}
-				});
+				jQuery(document).ready(function($){
 
-			});
+$('#etalage').etalage({
+	thumb_image_width: 300,
+	thumb_image_height: 200,
+	source_image_width: 750,
+	source_image_height: 900,
+	show_hint: true,
+	click_callback: function(image_anchor, instance_id){
+		alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
+	}
+});
+
+});
 		</script>
 
 

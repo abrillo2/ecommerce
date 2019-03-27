@@ -29,18 +29,31 @@
 
 foreach($products as $value){
 
-	$productPic = glob(PUB . "request/" . $value->id. "/*.{jpg,gif,png}", GLOB_BRACE);
+	 
+	if($value->status == 0){
+		continue;
+	 }
+
+	$productPic = glob(PUB . "request/" . $value->id. "/*.{jpg,gif,png,jpeg}", GLOB_BRACE);
+
+	
+
+	if(count($productPic) > 0){
+		$pic_url = $base_url.'request/'.$value->id.'/'.basename($productPic[0]);
+	}else{
+		$pic_url = $base_url.'img/demo-image.png';
+	}
 
 	echo '<article style="position: absolute; width: 100%; opacity: 0;">					
 					<div class="banner-matter">
 					<div class="col-md-5 banner-bag">
-						<img class="img-responsive " src="'.$base_url.'request/'.$value->id.'/'.basename($productPic[0]).'" alt=" " />
+						<img class="img-responsive " src="'.$pic_url .'" alt=" " />
 						</div>
 						<div class="col-md-7 banner-off">							
 						
 							<label>'.$value->name.'</label>
 							<p>'.$value->info.'</p>					
-							<span class="on-get">talk to buyer</span>
+							<a class="now-get get-cart" href="'.$logged_in.'chats?owner='.$value->user_email.'">Talk to Buyer</a> 
 						</div>
 						
 						<div class="clearfix"> </div>
@@ -77,19 +90,30 @@ foreach($products as $value){
 			<?php 
 			
 					for($i = 0; $i < $len; $i++){
+
+						 
+							if($products[$i]->status == 0){
+								continue;
+							}
 						
-							$productPic = glob(PUB . "request/" . $products[$i]->id. "/*.{jpg,gif,png}", GLOB_BRACE);
+							$productPic = glob(PUB . "request/" . $products[$i]->id. "/*.{jpg,gif,png,jpeg}", GLOB_BRACE);
+							
+								if(count($productPic) > 0){
+									$pic_url = $base_url.'request/'.$products[$i]->id.'/'.basename($productPic[0]);
+								}else{
+									$pic_url = $base_url.'img/demo-image.png';
+								}
 							echo '<a href="'.$home_url.'single.php">				 
 									<div class="col-md-6 con-sed-grid">
 								
 										<div class=" elit-grid"> 
 									
-											<h4>Looking for :</h4>
+											<h4>Budget : $'.$products[$i]->price.'</h4>
 											<label>'.$products[$i]->name.'</label>
 										<p>'.$products[$i]->info.'</p>
-										<span class="on-get">talk to buyer</span>						
+										<a class="now-get get-cart" href="'.$logged_in.'chats?owner='.$products[$i]->user_email.'">Talk To Buyer</a> 					
 									</div>						
-									<img class="img-responsive shoe-left" src="'.$base_url.'request/'.$products[$i]->id.'/'.basename($productPic[0]).'" alt=" " />
+									<img class="img-responsive shoe-left" src="'.$pic_url.'" alt=" " />
 								
 									<div class="clearfix"> </div>
 							
@@ -119,6 +143,10 @@ foreach($products as $value){
 		 <?php 
 
 foreach ($categories as $value){
+
+		 
+	
+
 		if($this->model->haveSubCategory($value->id)){
 			echo '<li class="item1"><a href="#">'.$value->name.'<img class="arrow-img" style="float:right; margin-top:20px" src="'.$base_url.'images/arrow1.png" alt=""/> </a>
 			<ul class="cute">
